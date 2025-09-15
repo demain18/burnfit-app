@@ -2,8 +2,10 @@ import { Text, View, StyleSheet, Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "@/components/atoms/Icon";
 import Calender from "../calender/Calender";
-import PlaceHolder from "../placeholder/Placeholder";
 import { colors } from "@/hooks/colorSchema";
+import Home from "../home/Home";
+import Library from "../library/Library";
+import Mypage from "../mypage/Mypage";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +19,7 @@ export default function TabNavigator({ ...rest }: Props) {
     >
       <Tab.Screen
         name="Home"
-        component={Calender}
+        component={Home}
         options={{
           tabBarIcon: ({ focused }) => <Icon type="Home" active={focused} />,
         }}
@@ -33,7 +35,7 @@ export default function TabNavigator({ ...rest }: Props) {
       />
       <Tab.Screen
         name="Library"
-        component={PlaceHolder}
+        component={Library}
         options={{
           tabBarIcon: ({ focused }) => (
             <Icon type="Dumbbell" active={focused} />
@@ -42,7 +44,7 @@ export default function TabNavigator({ ...rest }: Props) {
       />
       <Tab.Screen
         name="Mypage"
-        component={PlaceHolder}
+        component={Mypage}
         options={{
           tabBarIcon: ({ focused }) => <Icon type="Person" active={focused} />,
         }}

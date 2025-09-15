@@ -2,10 +2,10 @@ import { Text, View, StyleSheet } from "react-native";
 
 export interface Props {}
 
-export default function Calender({ ...rest }: Props) {
+export default function Home({ ...rest }: Props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Calender</Text>
+      <Text style={styles.text}>Home</Text>
     </View>
   );
 }
