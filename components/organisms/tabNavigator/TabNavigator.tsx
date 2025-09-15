@@ -1,8 +1,9 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "@/components/atoms/Icon";
 import Calender from "../calender/Calender";
 import PlaceHolder from "../placeholder/Placeholder";
+import { colors } from "@/hooks/colorSchema";
 
 const Tab = createBottomTabNavigator();
 
@@ -12,7 +13,7 @@ export default function TabNavigator({ ...rest }: Props) {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      screenOptions={{ tabBarActiveTintColor: "#000000" }}
+      screenOptions={{ tabBarActiveTintColor: colors.black }}
     >
       <Tab.Screen
         name="Home"
@@ -22,11 +23,11 @@ export default function TabNavigator({ ...rest }: Props) {
         }}
       />
       <Tab.Screen
-        name="Calender"
+        name="Calendar"
         component={Calender}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Icon type="Calender" active={focused} />
+            <Icon type="Calendar" active={focused} />
           ),
         }}
       />
