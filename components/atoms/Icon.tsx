@@ -4,14 +4,25 @@ import { colors } from "@/hooks/colorSchema";
 
 export interface Props {
   type: string;
+  size?: number;
   active?: boolean;
+  color?: string;
 }
 
-export default function TabBarIcon({ type, active = false }: Props) {
+export default function Icon({
+  type,
+  size = 20,
+  active = false,
+  color,
+}: Props) {
   const IconComponent = Ionicon;
 
   let iconName: string;
   let iconColor = active ? colors.black : colors.gray;
+
+  if (color) {
+    iconColor = color;
+  }
 
   switch (type) {
     case "Home":
@@ -26,13 +37,19 @@ export default function TabBarIcon({ type, active = false }: Props) {
     case "Person":
       iconName = active ? "person" : "person-outline";
       break;
+    case "Left":
+      iconName = "chevron-back-outline";
+      break;
+    case "Right":
+      iconName = "chevron-forward-outline";
+      break;
     default:
       return null;
   }
 
   return (
     <View>
-      <IconComponent name={iconName} size={20} color={iconColor} />
+      <IconComponent name={iconName} size={size} color={iconColor} />
     </View>
   );
 }

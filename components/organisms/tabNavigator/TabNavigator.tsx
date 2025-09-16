@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "@/components/atoms/Icon";
-import Calender from "../calender/Calender";
+import Calendar from "../calendar/Calendar";
 import { colors } from "@/hooks/colorSchema";
 import Home from "../home/Home";
 import Library from "../library/Library";
@@ -26,7 +26,7 @@ export default function TabNavigator({ ...rest }: Props) {
       />
       <Tab.Screen
         name="Calendar"
-        component={Calender}
+        component={Calendar}
         options={{
           tabBarIcon: ({ focused }) => (
             <Icon type="Calendar" active={focused} />
@@ -53,8 +53,4 @@ export default function TabNavigator({ ...rest }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  tab: {
-    paddingBottom: 10,
-  },
-});
+const styles = StyleSheet.create({});
