@@ -32,11 +32,20 @@ export default function Date({
 
   return (
     <TouchableOpacity
-      style={[styles.container, active && styles.dateActive]}
+      style={styles.container}
       onPress={onPressDate}
       disabled={disabled}
     >
-      <Text style={[styles.date, disabled && styles.dateDisabled]}>{num}</Text>
+      {active && <View style={styles.dateActive}></View>}
+      <Text
+        style={[
+          styles.date,
+          active && { fontWeight: "700" },
+          disabled && styles.dateDisabled,
+        ]}
+      >
+        {num}
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -45,20 +54,26 @@ const styles = StyleSheet.create({
   container: {
     flexBasis: "14.28%",
     color: colors.black,
-    paddingTop: 15,
-    paddingBottom: 15,
-    boxSizing: "border-box",
+    position: "relative",
   },
   date: {
     fontFamily: "Roboto",
     fontWeight: 300,
     textAlign: "center",
     fontSize: 15,
+    paddingTop: 19,
+    paddingBottom: 19,
   },
   dateActive: {
-    borderWidth: 3,
+    position: "absolute",
+    width: "70%",
+    height: "70%",
+    top: 9,
+    left: 8.5,
+    borderWidth: 2,
     borderColor: colors.blue,
     borderStyle: "solid",
+    borderRadius: "100%",
   },
   dateDisabled: {
     color: colors.lightGray,
