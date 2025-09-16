@@ -7,18 +7,22 @@ import { fullYearMonths } from "@/hooks/fullYearDates";
 export interface Props {}
 
 export default function CalendarHeader({ ...rest }: Props) {
-  const { monthNow } = useBasicStore();
+  const {
+    currentMonth: monthNow,
+    increaseMonth,
+    decreaseMonth,
+  } = useBasicStore();
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={decreaseMonth}>
         <Icon type="Left" color={colors.blue} size={22} />
       </TouchableOpacity>
 
       <Text style={styles.title}>
         {fullYearMonths[monthNow]}({monthNow + 1}월) 2025
       </Text>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={increaseMonth}>
         <Icon type="Right" color={colors.blue} size={22} />
       </TouchableOpacity>
     </View>

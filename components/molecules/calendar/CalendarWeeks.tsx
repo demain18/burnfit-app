@@ -30,9 +30,6 @@ const styles = StyleSheet.create({
     height: 27,
     textAlign: "center",
     color: colors.gray,
-    // borderWidth: 1,
-    // borderColor: "gray",
-    // borderStyle: "solid",
   },
   weekSunday: {
     color: colors.red,

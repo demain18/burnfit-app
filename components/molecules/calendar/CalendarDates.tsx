@@ -1,32 +1,53 @@
-import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import React, { useRef, useEffect } from "react";
+import { View, StyleSheet, Dimensions } from "react-native";
 import Date from "@/components/atoms/Date";
 import { fullYearDates } from "@/hooks/fullYearDates";
 import { ScrollView } from "react-native-gesture-handler";
 import useBasicStore from "@/hooks/basicStore";
+import { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 
 export interface Props {}
 
 export default function CalendarDates({ ...rest }: Props) {
-  const { setMonth } = useBasicStore();
+  const { currentMonth, setMonth } = useBasicStore();
+  const deviceWidth = Dimensions.get("window").width;
+  const scrollViewRef = useRef<ScrollView | null>(null);
 
-  const handleScrollEnd = (event: any) => {
+  // CalendarHeader 버튼으로 Month 변경하기
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      // monthNow의 위치값 만큼 scrollTo로 이동
+      scrollViewRef.current.scrollTo({
+        x: currentMonth * deviceWidth,
+        animated: true,
+      });
+    }
+  }, [currentMonth]);
+
+  // 좌우 스크롤로 Month 변경하기
+  const setCurrentMonth = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetX = event.nativeEvent.contentOffset.x;
-    const month = Math.round(offsetX / Dimensions.get("window").width);
-    console.log(`${month + 1}월`);
-    setMonth(month);
+    const currentMonthIndex = Math.round(offsetX / deviceWidth);
+    setMonth(currentMonthIndex);
   };
 
   return (
     <ScrollView
+      ref={scrollViewRef}
       horizontal={true}
       pagingEnabled
-      onMomentumScrollEnd={handleScrollEnd}
+      onMomentumScrollEnd={setCurrentMonth}
     >
-      {fullYearDates.map((i, x) => (
-        <View key={x} style={styles.monthWrap}>
-          {i.dates.map((date, x) => (
-            <Date key={x} num={date.num} disabled={!date.place} />
+      {fullYearDates.map((month, monthIndex) => (
+        <View key={monthIndex} style={styles.monthWrap}>
+          {month.dates.map((date, index) => (
+            <Date
+              key={index}
+              num={date.num}
+              monthIndex={monthIndex}
+              dateIndex={index}
+              disabled={!date.place}
+            />
           ))}
         </View>
       ))}
