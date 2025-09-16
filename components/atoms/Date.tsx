@@ -19,11 +19,8 @@ export default function Date({
   const { activeMonth, activeDate, setActiveMonth, setActiveDate } =
     useBasicStore();
 
-  let active = false;
-
-  if (activeMonth === monthIndex && activeDate === dateIndex) {
-    active = true;
-  }
+  const active =
+    activeMonth === monthIndex && activeDate === dateIndex ? true : false;
 
   const onPressDate = () => {
     setActiveMonth(monthIndex);

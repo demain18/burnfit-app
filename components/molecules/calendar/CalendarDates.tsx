@@ -16,7 +16,7 @@ export default function CalendarDates({ ...rest }: Props) {
   // CalendarHeader 버튼으로 Month 변경하기
   useEffect(() => {
     if (scrollViewRef.current) {
-      // monthNow의 위치값 만큼 scrollTo로 이동
+      // currentMonth의 위치값 만큼 scrollTo를 사용해서 이동
       scrollViewRef.current.scrollTo({
         x: currentMonth * deviceWidth,
         animated: true,

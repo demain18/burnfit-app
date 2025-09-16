@@ -15,7 +15,6 @@ const useBasicStore = create<BasicStoreState>((set) => ({
   currentMonth: 0,
   activeMonth: null,
   activeDate: null,
-  // dateNow: 0,
   increaseMonth: () =>
     set((state) => ({
       currentMonth:
