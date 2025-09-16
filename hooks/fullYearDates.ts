@@ -514,7 +514,7 @@ export const fullYearDates = [
   },
 ];
 
-const fullYearMonths = [
+export const fullYearMonths = [
   "January",
   "February",
   "March",
