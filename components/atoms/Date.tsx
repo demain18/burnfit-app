@@ -7,6 +7,7 @@ export interface Props {
   monthIndex: number;
   dateIndex: number;
   disabled?: boolean;
+  block?: boolean;
 }
 
 export default function Date({
@@ -14,11 +15,13 @@ export default function Date({
   monthIndex,
   dateIndex,
   disabled = false,
+  block = false,
   ...rest
 }: Props) {
   const {
     activeMonth,
     activeDate,
+    activeDateLine,
     setActiveMonth,
     setActiveDate,
     setActiveDateLine,
@@ -30,15 +33,14 @@ export default function Date({
   const onPressDate = () => {
     setActiveMonth(monthIndex);
     setActiveDate(dateIndex);
-
-    console.log("dateLine:", Math.floor(dateIndex / 7));
-
     setActiveDateLine(Math.floor(dateIndex / 7));
+
+    console.log(activeDateLine);
   };
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[styles.container, block && styles.containerBlock]}
       onPress={onPressDate}
       disabled={disabled}
     >
@@ -64,6 +66,10 @@ const styles = StyleSheet.create({
     boxSizing: "border-box",
     borderWidth: 1,
     borderColor: colors.white,
+  },
+  containerBlock: {
+    flexBasis: 0,
+    width: 55.7,
   },
   date: {
     fontFamily: "Roboto",
