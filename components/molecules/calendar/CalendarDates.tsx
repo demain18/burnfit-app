@@ -2,21 +2,26 @@ import React, { useRef, useEffect } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import Date from "@/components/atoms/Date";
 import { fullYearDates } from "@/hooks/fullYearDates";
-import { ScrollView } from "react-native-gesture-handler";
 import useBasicStore from "@/hooks/basicStore";
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import { ScrollView } from "react-native-gesture-handler";
+import { colors } from "@/hooks/colorSchema";
 
-export interface Props {}
+export interface Props {
+  calendarHeight: any;
+}
 
-export default function CalendarDates({ ...rest }: Props) {
+export default function CalendarDates({ calendarHeight, ...rest }: Props) {
   const { currentMonth, setMonth } = useBasicStore();
   const deviceWidth = Dimensions.get("window").width;
-  const scrollViewRef = useRef<ScrollView | null>(null);
+  const scrollViewRef = useRef<Animated.ScrollView | null>(null);
+  const minHeight = 60;
+  const maxHeight = 354;
 
-  // CalendarHeader 버튼으로 Month 변경하기
+  // CalenderHeader버튼 클릭시 페이징 실행
   useEffect(() => {
     if (scrollViewRef.current) {
-      // currentMonth의 위치값 만큼 scrollTo를 사용해서 이동
       scrollViewRef.current.scrollTo({
         x: currentMonth * deviceWidth,
         animated: true,
@@ -24,38 +29,64 @@ export default function CalendarDates({ ...rest }: Props) {
     }
   }, [currentMonth]);
 
-  // 좌우 스크롤로 Month 변경하기
+  // 스크롤로 좌우 움직일시 페이징 실행
   const setCurrentMonth = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetX = event.nativeEvent.contentOffset.x;
     const currentMonthIndex = Math.round(offsetX / deviceWidth);
     setMonth(currentMonthIndex);
   };
 
+  // 캘린더 높이를 조절하는 스타일
+  const animatedContainer = useAnimatedStyle(() => {
+    return {
+      height: calendarHeight.value,
+      // transform: [{ translateY: calendarHeight.value / 0 }],
+    };
+  });
+
+  const animatedScrollViewWrap = useAnimatedStyle(() => {
+    return {
+      // transform: [{ translateY: calendarHeight.value - maxHeight * 2 }],
+    };
+  });
+
   return (
-    <ScrollView
-      ref={scrollViewRef}
-      horizontal={true}
-      pagingEnabled
-      onMomentumScrollEnd={setCurrentMonth}
+    <Animated.ScrollView
+      style={[styles.scrollView, animatedContainer]} // animatedStyle 적용
     >
-      {fullYearDates.map((month, monthIndex) => (
-        <View key={monthIndex} style={styles.monthWrap}>
-          {month.dates.map((date, index) => (
-            <Date
-              key={index}
-              num={date.num}
-              monthIndex={monthIndex}
-              dateIndex={index}
-              disabled={!date.place}
-            />
+      <Animated.View style={animatedScrollViewWrap}>
+        <ScrollView
+          ref={scrollViewRef}
+          horizontal={true}
+          pagingEnabled
+          onMomentumScrollEnd={setCurrentMonth}
+        >
+          {fullYearDates.map((month, monthIndex) => (
+            <View key={monthIndex} style={styles.monthWrap}>
+              {month.dates.map((date, index) => (
+                <Date
+                  key={index}
+                  num={date.num}
+                  monthIndex={monthIndex}
+                  dateIndex={index}
+                  disabled={!date.place}
+                />
+              ))}
+            </View>
           ))}
-        </View>
-      ))}
-    </ScrollView>
+        </ScrollView>
+      </Animated.View>
+    </Animated.ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    borderWidth: 2,
+    borderColor: colors.blue,
+    // transform: [{ translateY: 0 }],
+  },
+
   monthWrap: {
     flexDirection: "row",
     flexWrap: "wrap",

@@ -2,11 +2,11 @@ import { create } from "zustand";
 
 interface BasicStoreState {
   currentMonth: number;
+  setMonth: (newMonth: number) => void;
   increaseMonth: () => void;
   decreaseMonth: () => void;
   activeMonth: number | null;
   activeDate: number | null;
-  setMonth: (newMonth: number) => void;
   setActiveMonth: (num: number) => void;
   setActiveDate: (num: number) => void;
 }
