@@ -2,14 +2,14 @@ import { create } from "zustand";
 
 interface BasicStoreState {
   currentMonth: number;
+  activeMonth: number | null;
+  activeDate: number | null;
+  activeDateLine: number;
   setMonth: (newMonth: number) => void;
   increaseMonth: () => void;
   decreaseMonth: () => void;
-  activeMonth: number | null;
-  activeDate: number | null;
   setActiveMonth: (num: number) => void;
   setActiveDate: (num: number) => void;
-  activeDateLine: number;
   setActiveDateLine: (num: number) => void;
 }
 
@@ -18,6 +18,7 @@ const useBasicStore = create<BasicStoreState>((set) => ({
   activeMonth: null,
   activeDate: null,
   activeDateLine: 0,
+  setMonth: (newMonth: number) => set({ currentMonth: newMonth }),
   increaseMonth: () =>
     set((state) => ({
       currentMonth:
@@ -28,7 +29,6 @@ const useBasicStore = create<BasicStoreState>((set) => ({
       currentMonth:
         state.currentMonth > 0 ? state.currentMonth - 1 : state.currentMonth,
     })),
-  setMonth: (newMonth: number) => set({ currentMonth: newMonth }),
   setActiveMonth: (num: number) => set({ activeMonth: num }),
   setActiveDate: (num: number) => set({ activeDate: num }),
   removeAllCount: () => set({ currentMonth: 0 }),

@@ -4,20 +4,14 @@ import { Text, View, StyleSheet } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
 
 export interface Props {
-  gesture: any; // 전달받을 제스처의 타입
-  calendarHeight: any;
+  gesture: any;
 }
 
-export default function CalendarBody({
-  gesture,
-  calendarHeight,
-  ...rest
-}: Props) {
+export default function CalendarBody({ gesture, ...rest }: Props) {
   return (
-    // GestureDetector로 감싸서 제스처를 감지
     <GestureDetector gesture={gesture}>
       <View style={styles.container}>
-        <Text>Calendar Body</Text>
+        <Text style={styles.text}>Calendar Body</Text>
       </View>
     </GestureDetector>
   );
@@ -31,5 +25,8 @@ const styles = StyleSheet.create({
     borderColor: "#ececec",
     justifyContent: "center",
     alignItems: "center",
+  },
+  text: {
+    color: colors.gray,
   },
 });

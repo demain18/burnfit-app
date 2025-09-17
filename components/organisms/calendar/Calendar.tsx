@@ -15,7 +15,7 @@ export default function Calendar({ ...rest }: Props) {
   const calendarHeight = useSharedValue(maxHeight);
 
   const panGesture = Gesture.Pan().onUpdate((event) => {
-    const newHeight = calendarHeight.value + event.translationY * 0.1;
+    const newHeight = calendarHeight.value + event.translationY * 0.2;
 
     calendarHeight.value = Math.max(minHeight, Math.min(maxHeight, newHeight));
   });
@@ -24,8 +24,12 @@ export default function Calendar({ ...rest }: Props) {
     <View style={styles.container}>
       <CalendarHeader />
       <CalendarWeeks />
-      <CalendarDates calendarHeight={calendarHeight} />
-      <CalendarBody gesture={panGesture} calendarHeight={calendarHeight} />
+      <CalendarDates
+        calendarHeight={calendarHeight}
+        minHeight={minHeight}
+        maxHeight={maxHeight}
+      />
+      <CalendarBody gesture={panGesture} />
     </View>
   );
 }
