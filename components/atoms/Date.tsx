@@ -16,8 +16,13 @@ export default function Date({
   disabled = false,
   ...rest
 }: Props) {
-  const { activeMonth, activeDate, setActiveMonth, setActiveDate } =
-    useBasicStore();
+  const {
+    activeMonth,
+    activeDate,
+    setActiveMonth,
+    setActiveDate,
+    setActiveDateLine,
+  } = useBasicStore();
 
   const active =
     activeMonth === monthIndex && activeDate === dateIndex ? true : false;
@@ -25,6 +30,10 @@ export default function Date({
   const onPressDate = () => {
     setActiveMonth(monthIndex);
     setActiveDate(dateIndex);
+
+    console.log("dateLine:", Math.floor(dateIndex / 7));
+
+    setActiveDateLine(Math.floor(dateIndex / 7));
   };
 
   return (
@@ -52,14 +61,17 @@ const styles = StyleSheet.create({
     flexBasis: "14.28%",
     color: colors.black,
     position: "relative",
+    boxSizing: "border-box",
+    borderWidth: 1,
+    borderColor: colors.white,
   },
   date: {
     fontFamily: "Roboto",
     fontWeight: 300,
     textAlign: "center",
     fontSize: 15,
-    paddingTop: 19,
-    paddingBottom: 19,
+    paddingTop: 18,
+    paddingBottom: 18,
   },
   dateActive: {
     position: "absolute",

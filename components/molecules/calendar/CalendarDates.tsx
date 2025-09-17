@@ -13,11 +13,12 @@ export interface Props {
 }
 
 export default function CalendarDates({ calendarHeight, ...rest }: Props) {
-  const { currentMonth, setMonth } = useBasicStore();
+  const { currentMonth, activeDateLine, setMonth } = useBasicStore();
   const deviceWidth = Dimensions.get("window").width;
   const scrollViewRef = useRef<Animated.ScrollView | null>(null);
   const minHeight = 60;
   const maxHeight = 354;
+  let lineHeight = 60;
 
   // CalenderHeader버튼 클릭시 페이징 실행
   useEffect(() => {
@@ -44,49 +45,51 @@ export default function CalendarDates({ calendarHeight, ...rest }: Props) {
     };
   });
 
-  const animatedScrollViewWrap = useAnimatedStyle(() => {
+  const animatedScrollView = useAnimatedStyle(() => {
+    // console.log(calendarHeight.value, "/", maxHeight / activeDateLine);
+
     return {
-      // transform: [{ translateY: calendarHeight.value - maxHeight * 2 }],
+      top:
+        -(activeDateLine * lineHeight - activeDateLine * 2.4) *
+        (1 - (calendarHeight.value - minHeight) / (maxHeight - minHeight)),
     };
   });
 
   return (
-    <Animated.ScrollView
-      style={[styles.scrollView, animatedContainer]} // animatedStyle 적용
-    >
-      <Animated.View style={animatedScrollViewWrap}>
-        <ScrollView
-          ref={scrollViewRef}
-          horizontal={true}
-          pagingEnabled
-          onMomentumScrollEnd={setCurrentMonth}
-        >
-          {fullYearDates.map((month, monthIndex) => (
-            <View key={monthIndex} style={styles.monthWrap}>
-              {month.dates.map((date, index) => (
-                <Date
-                  key={index}
-                  num={date.num}
-                  monthIndex={monthIndex}
-                  dateIndex={index}
-                  disabled={!date.place}
-                />
-              ))}
-            </View>
-          ))}
-        </ScrollView>
-      </Animated.View>
+    <Animated.ScrollView style={[styles.container, animatedContainer]}>
+      <Animated.ScrollView
+        ref={scrollViewRef}
+        horizontal={true}
+        pagingEnabled
+        onMomentumScrollEnd={setCurrentMonth}
+        style={[styles.scrollView, animatedScrollView]}
+      >
+        {fullYearDates.map((month, monthIndex) => (
+          <View key={monthIndex} style={styles.monthWrap}>
+            {month.dates.map((date, index) => (
+              <Date
+                key={index}
+                num={date.num}
+                monthIndex={monthIndex}
+                dateIndex={index}
+                disabled={!date.place}
+              />
+            ))}
+          </View>
+        ))}
+      </Animated.ScrollView>
     </Animated.ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    borderWidth: 2,
-    borderColor: colors.blue,
+  container: {
     // transform: [{ translateY: 0 }],
   },
-
+  scrollView: {
+    // borderWidth: 2,
+    // borderColor: colors.blue,
+  },
   monthWrap: {
     flexDirection: "row",
     flexWrap: "wrap",

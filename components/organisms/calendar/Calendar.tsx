@@ -18,7 +18,6 @@ export default function Calendar({ ...rest }: Props) {
     const newHeight = calendarHeight.value + event.translationY * 0.1;
 
     calendarHeight.value = Math.max(minHeight, Math.min(maxHeight, newHeight));
-    console.log(calendarHeight.value);
   });
 
   return (

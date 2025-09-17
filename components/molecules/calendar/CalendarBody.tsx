@@ -1,3 +1,4 @@
+import { colors } from "@/hooks/colorSchema";
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
@@ -25,9 +26,9 @@ export default function CalendarBody({
 const styles = StyleSheet.create({
   container: {
     flex: 300,
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: "#ececec",
     justifyContent: "center",
     alignItems: "center",
   },

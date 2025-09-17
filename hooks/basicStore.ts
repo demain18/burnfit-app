@@ -9,12 +9,15 @@ interface BasicStoreState {
   activeDate: number | null;
   setActiveMonth: (num: number) => void;
   setActiveDate: (num: number) => void;
+  activeDateLine: number;
+  setActiveDateLine: (num: number) => void;
 }
 
 const useBasicStore = create<BasicStoreState>((set) => ({
   currentMonth: 0,
   activeMonth: null,
   activeDate: null,
+  activeDateLine: 0,
   increaseMonth: () =>
     set((state) => ({
       currentMonth:
@@ -29,6 +32,7 @@ const useBasicStore = create<BasicStoreState>((set) => ({
   setActiveMonth: (num: number) => set({ activeMonth: num }),
   setActiveDate: (num: number) => set({ activeDate: num }),
   removeAllCount: () => set({ currentMonth: 0 }),
+  setActiveDateLine: (num: number) => set({ activeDateLine: num }),
 }));
 
 export default useBasicStore;
