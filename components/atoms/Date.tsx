@@ -34,8 +34,6 @@ export default function Date({
     setActiveMonth(monthIndex);
     setActiveDate(dateIndex);
     setActiveDateLine(Math.floor(dateIndex / 7));
-
-    console.log(activeDateLine);
   };
 
   return (

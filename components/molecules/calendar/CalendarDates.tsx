@@ -4,8 +4,8 @@ import { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import Animated, {
   useAnimatedStyle,
-  useAnimatedReaction, // ✅ 추가: useAnimatedReaction 불러오기
-  runOnJS, // ✅ 추가: runOnJS 불러오기
+  useAnimatedReaction,
+  runOnJS,
 } from "react-native-reanimated";
 import Date from "@/components/atoms/Date";
 import useBasicStore from "@/hooks/basicStore";
@@ -39,7 +39,7 @@ export default function CalendarDates({
     }
   }, [currentMonth]);
 
-  // 막대형 캘린더 적합한 위치로 이동 실행
+  // 캘린더가 완전히 접혔을시 주별 캘린더 배치
   useEffect(() => {
     if (slickScrollViewRef.current && hideWeeks) {
       slickScrollViewRef.current.scrollTo({
@@ -49,12 +49,11 @@ export default function CalendarDates({
     }
   }, [hideWeeks]);
 
-  // 스크롤로 좌우 움직일시 페이징 실행
+  // 페이징 발생시 store에 현재 월 저장
   const setCurrentMonth = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetX = event.nativeEvent.contentOffset.x;
     const currentMonthIndex = Math.round(offsetX / deviceWidth);
     setMonth(currentMonthIndex);
-    console.log("가로 페이징 이벤트 실행됨", offsetX);
   };
 
   // 캘린더 높이를 조절하는 애니메이션
@@ -64,7 +63,7 @@ export default function CalendarDates({
     };
   });
 
-  // 캘린더의 FlexGrow를 조절하는 애니메이션
+  // 캘린더의 flexGrow를 연산하는 애니메이션
   const animatedScrollView = useAnimatedStyle(() => {
     return {
       top:
@@ -89,24 +88,25 @@ export default function CalendarDates({
   return (
     <Animated.ScrollView style={animatedContainer}>
       {
+        // 캘린더 열린 버전
         <Animated.ScrollView
-          ref={scrollViewRef}
-          horizontal={true}
-          pagingEnabled
-          onMomentumScrollEnd={setCurrentMonth}
           style={[
             hideWeeks === true && { display: "none" },
             animatedScrollView,
           ]}
+          ref={scrollViewRef}
+          horizontal={true}
+          pagingEnabled
+          onMomentumScrollEnd={setCurrentMonth}
         >
           {fullYearDates.map((month, monthIndex) => (
             <View key={monthIndex} style={styles.monthWrap}>
-              {month.dates.map((date, index) => (
+              {month.dates.map((date, dateIndex) => (
                 <Date
-                  key={index}
+                  key={dateIndex}
                   num={date.num}
                   monthIndex={monthIndex}
-                  dateIndex={index}
+                  dateIndex={dateIndex}
                   disabled={!date.place}
                 />
               ))}
@@ -115,6 +115,7 @@ export default function CalendarDates({
         </Animated.ScrollView>
       }
       {
+        // 캘린더 닫힌 버전
         <Animated.ScrollView
           style={[hideWeeks === false && { display: "none" }]}
         >
@@ -131,12 +132,12 @@ export default function CalendarDates({
                     { marginTop: -activeDateLine * 1.7 },
                   ]}
                 >
-                  {month.dates.map((date, index) => (
+                  {month.dates.map((date, dateIndex) => (
                     <Date
-                      key={index}
+                      key={dateIndex}
                       num={date.num}
                       monthIndex={monthIndex}
-                      dateIndex={index}
+                      dateIndex={dateIndex}
                       disabled={!date.place}
                       block
                     />
@@ -158,6 +159,5 @@ const styles = StyleSheet.create({
   },
   weeksWrap: {
     flexDirection: "row",
-    // flexWrap: "wrap",
   },
 });
