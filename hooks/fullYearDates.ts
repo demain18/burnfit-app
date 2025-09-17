@@ -1,5 +1,4 @@
 export const fullYearDates = [
-  // January 2025 (Starts on Wednesday)
   {
     month: "January",
     dates: [
@@ -47,7 +46,6 @@ export const fullYearDates = [
       { num: 8, place: false },
     ],
   },
-  // February 2025 (Starts on Saturday)
   {
     month: "February",
     dates: [
@@ -95,7 +93,6 @@ export const fullYearDates = [
       { num: 8, place: false },
     ],
   },
-  // March 2025 (Starts on Saturday)
   {
     month: "March",
     dates: [
@@ -143,7 +140,6 @@ export const fullYearDates = [
       { num: 5, place: false },
     ],
   },
-  // April 2025 (Starts on Tuesday)
   {
     month: "April",
     dates: [
@@ -191,7 +187,6 @@ export const fullYearDates = [
       { num: 10, place: false },
     ],
   },
-  // May 2025 (Starts on Thursday)
   {
     month: "May",
     dates: [
@@ -239,7 +234,6 @@ export const fullYearDates = [
       { num: 7, place: false },
     ],
   },
-  // June 2025 (Starts on Sunday)
   {
     month: "June",
     dates: [
@@ -287,7 +281,6 @@ export const fullYearDates = [
       { num: 12, place: false },
     ],
   },
-  // July 2025 (Starts on Tuesday)
   {
     month: "July",
     dates: [
@@ -335,7 +328,6 @@ export const fullYearDates = [
       { num: 9, place: false },
     ],
   },
-  // August 2025 (Starts on Friday)
   {
     month: "August",
     dates: [
@@ -383,7 +375,6 @@ export const fullYearDates = [
       { num: 6, place: false },
     ],
   },
-  // September 2025 (Starts on Monday)
   {
     month: "September",
     dates: [
@@ -431,7 +422,6 @@ export const fullYearDates = [
       { num: 11, place: false },
     ],
   },
-  // October 2025 (Starts on Wednesday)
   {
     month: "October",
     dates: [
@@ -479,7 +469,6 @@ export const fullYearDates = [
       { num: 8, place: false },
     ],
   },
-  // November 2025 (Starts on Saturday)
   {
     month: "November",
     dates: [
@@ -527,7 +516,6 @@ export const fullYearDates = [
       { num: 6, place: false },
     ],
   },
-  // December 2025 (Starts on Monday)
   {
     month: "December",
     dates: [
