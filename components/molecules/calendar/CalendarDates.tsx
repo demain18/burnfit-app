@@ -41,7 +41,7 @@ export default function CalendarDates({
 
   // 막대형 캘린더 적합한 위치로 이동 실행
   useEffect(() => {
-    if (slickScrollViewRef.current) {
+    if (slickScrollViewRef.current && hideWeeks) {
       slickScrollViewRef.current.scrollTo({
         x: activeDateLine * deviceWidth,
         animated: false,
@@ -54,6 +54,7 @@ export default function CalendarDates({
     const offsetX = event.nativeEvent.contentOffset.x;
     const currentMonthIndex = Math.round(offsetX / deviceWidth);
     setMonth(currentMonthIndex);
+    console.log("가로 페이징 이벤트 실행됨", offsetX);
   };
 
   // 캘린더 높이를 조절하는 애니메이션
@@ -63,7 +64,7 @@ export default function CalendarDates({
     };
   });
 
-  // 캘린더의 FlexGrow를 계산하는 애니메이션
+  // 캘린더의 FlexGrow를 조절하는 애니메이션
   const animatedScrollView = useAnimatedStyle(() => {
     return {
       top:
@@ -72,31 +73,31 @@ export default function CalendarDates({
     };
   });
 
-  // 캘린더가 최소화됬는지 감지하는 함수
+  // 캘린더가 열리고 닫힐때 감지하는 함수
   useAnimatedReaction(
     () => calendarHeight.value,
     (currentHeight, prevHeight) => {
       "worklet";
       if (currentHeight === minHeight && prevHeight !== minHeight) {
         runOnJS(setHideWeeks)(true);
-      } else if (currentHeight > minHeight) {
+      } else if (currentHeight > minHeight && prevHeight === minHeight) {
         runOnJS(setHideWeeks)(false);
       }
     }
   );
 
   return (
-    <Animated.ScrollView
-      style={animatedContainer}
-      onMomentumScrollEnd={setCurrentMonth}
-    >
-      {!hideWeeks ? (
+    <Animated.ScrollView style={animatedContainer}>
+      {
         <Animated.ScrollView
           ref={scrollViewRef}
           horizontal={true}
           pagingEnabled
           onMomentumScrollEnd={setCurrentMonth}
-          style={animatedScrollView}
+          style={[
+            hideWeeks === true && { display: "none" },
+            animatedScrollView,
+          ]}
         >
           {fullYearDates.map((month, monthIndex) => (
             <View key={monthIndex} style={styles.monthWrap}>
@@ -112,31 +113,39 @@ export default function CalendarDates({
             </View>
           ))}
         </Animated.ScrollView>
-      ) : (
-        fullYearDates.map(
-          (month, monthIndex) =>
-            monthIndex === currentMonth && (
-              <ScrollView
-                ref={slickScrollViewRef}
-                horizontal={true}
-                pagingEnabled
-                key={monthIndex}
-                style={[styles.weeksWrap, { marginTop: -activeDateLine * 1.7 }]}
-              >
-                {month.dates.map((date, index) => (
-                  <Date
-                    key={index}
-                    num={date.num}
-                    monthIndex={monthIndex}
-                    dateIndex={index}
-                    disabled={!date.place}
-                    block
-                  />
-                ))}
-              </ScrollView>
-            )
-        )
-      )}
+      }
+      {
+        <Animated.ScrollView
+          style={[hideWeeks === false && { display: "none" }]}
+        >
+          {fullYearDates.map(
+            (month, monthIndex) =>
+              monthIndex === currentMonth && (
+                <ScrollView
+                  ref={slickScrollViewRef}
+                  horizontal={true}
+                  pagingEnabled
+                  key={monthIndex}
+                  style={[
+                    styles.weeksWrap,
+                    { marginTop: -activeDateLine * 1.7 },
+                  ]}
+                >
+                  {month.dates.map((date, index) => (
+                    <Date
+                      key={index}
+                      num={date.num}
+                      monthIndex={monthIndex}
+                      dateIndex={index}
+                      disabled={!date.place}
+                      block
+                    />
+                  ))}
+                </ScrollView>
+              )
+          )}
+        </Animated.ScrollView>
+      }
     </Animated.ScrollView>
   );
 }
